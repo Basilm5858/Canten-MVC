@@ -13,7 +13,6 @@ namespace Canteen_Order_Management_System.Models
         [Required]
         public DateTime OrderDateTime { get; set; }
         [Required]
-        [Range(1, int.MaxValue , ErrorMessage = " Must be greater than 0")]
         public decimal TotalPrice { get; set; }
         [Required]
         public string Status {  get; set; }

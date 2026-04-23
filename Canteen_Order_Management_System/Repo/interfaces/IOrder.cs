@@ -6,7 +6,8 @@ namespace Canteen_Order_Management_System.Repo.interfaces
     public interface IOrder
     {
         List<Order> GetOrders();
-        List<Staff> Rule();
+        List<Staff> Role();
+        List<User> Role_User();
         Order GetById(int id);
         void Add(Order order);
         void Update(OrderVM vm);

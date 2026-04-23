@@ -39,7 +39,7 @@ namespace Canteen_Order_Management_System.Repo.impelementation
                 exi.UserId = vm.UserId;
                 exi.Name = vm.Name;
                 exi.Phone = vm.Phone;
-               
+                exi.JobTitle = vm.JobTitle;
             }
             _c.SaveChanges();
         }

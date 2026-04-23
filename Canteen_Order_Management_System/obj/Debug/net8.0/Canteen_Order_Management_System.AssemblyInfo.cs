@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Canteen_Order_Management_System")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a66d5e23dfbe70d80c50d3d0b02821c6ae1bc984")]
 [assembly: System.Reflection.AssemblyProductAttribute("Canteen_Order_Management_System")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Canteen_Order_Management_System")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

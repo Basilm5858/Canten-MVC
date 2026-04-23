@@ -15,8 +15,8 @@ namespace Canteen_Order_Management_System.Models
         public string Phone { get; set; }
         [Required]
         public string Status { get; set; }
-        //[Required]
-        //public string JobTitle {  get; set; }
+        [Required]
+        public string JobTitle { get; set; }
         public User User { get; set; }
         [ForeignKey("UserId")]
         public int UserId { get; set; }

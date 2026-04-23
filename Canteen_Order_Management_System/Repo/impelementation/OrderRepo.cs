@@ -29,17 +29,27 @@ namespace Canteen_Order_Management_System.Repo.impelementation
                  .FirstOrDefault(x => x.OrderId == id);
         }
 
-        public List<Staff> Rule()
+        public List<Staff> Role()
         {
             return _c.staffs
                 .Where(x => x.Status == "Available")
                 .ToList();
         }
+        public List<User> Role_User()
+        {
+            return _c.Users
+                .Where(x => x.Role == "Customer")
+                .ToList();
+        }
         public void Add(Order order)
         {
+            var staff = _c.staffs.FirstOrDefault(s => s.StaffId == order.StaffId);
+
             _c.Orders.Add(order);
+
+            staff.Status = "Busy";
+
             _c.SaveChanges();
-            
         }
       
         public void Update(OrderVM vm)
@@ -47,20 +57,39 @@ namespace Canteen_Order_Management_System.Repo.impelementation
             var exi = _c.Orders.Find(vm.StaffId);
             if(exi != null)
             {
-                exi.OrderId = vm.OrderId;
-                exi.Status = vm.Status;
-                exi.OrderDateTime = vm.OrderDateTime;
-                exi.StaffId = vm.StaffId;
-                exi.TotalPrice = vm.TotalPrice;
-                exi.UserId = vm.UserId;
+                if (exi.TotalPrice > 0)
+                {
+                    exi.OrderId = vm.OrderId;
+                    exi.Status = vm.Status;
+                    exi.OrderDateTime = vm.OrderDateTime;
+                    exi.StaffId = vm.StaffId;
+                    exi.TotalPrice = vm.TotalPrice;
+                    exi.UserId = vm.UserId;
+                    exi.FoodItemId = vm.FoodItemId;
+                    exi.UserId = vm.UserId;
+                }
+                else
+                {
+                    throw new Exception("The Total Price Must Be More Than 0");
+                }
             }
+            
+
             _c.SaveChanges();
         }
         public void Delete(int id)
         {
             var res = _c.Orders.Find(id);
-            if(res != null)
+
+            if (res != null)
             {
+                var staff = _c.staffs.FirstOrDefault(s => s.StaffId == res.StaffId);
+
+                if (staff != null && staff.Status == "Busy")
+                {
+                    staff.Status = "Available";
+                }
+
                 _c.Orders.Remove(res);
                 _c.SaveChanges();
             }

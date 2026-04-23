@@ -52,6 +52,7 @@ namespace Canteen_Order_Management_System.Controllers
                 Name = collection.Name,
                 Phone = collection.Phone,
                 UserId = collection.UserId,
+                JobTitle = collection.JobTitle,
             };
             staff.AddStaff(res);
             return RedirectToAction(nameof(Index));
@@ -69,6 +70,7 @@ namespace Canteen_Order_Management_System.Controllers
                 Phone = res.Phone,
                 Users = user.GetAllUsers(),
                 UserId = res.UserId,
+                JobTitle = res.JobTitle,
 
             };
             return View(data);

@@ -3,6 +3,7 @@ using Canteen_Order_Management_System.Repo.interfaces;
 using Canteen_Order_Management_System.View_Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Canteen_Order_Management_System.Controllers
 {
@@ -41,9 +42,9 @@ namespace Canteen_Order_Management_System.Controllers
         {
             var data = new OrderVM()
             {
-                Users = user.GetAllUsers(),
+                Users = order.Role_User(),
                 FoodItems = foodItem.GetFoodItems(),
-                Staffs = order.Rule(),
+                Staffs = order.Role(),
             };
             return View(data);
         }
@@ -51,8 +52,12 @@ namespace Canteen_Order_Management_System.Controllers
         // POST: OrderController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(OrderVM collection)
+        public IActionResult Create(OrderVM collection)
         {
+            if(collection.TotalPrice < 1)
+            {
+                throw new ArgumentException("The Total Price Must Be More Than 0");
+            }
             var res = new Order()
             {
                 StaffId = collection.StaffId,
@@ -63,8 +68,8 @@ namespace Canteen_Order_Management_System.Controllers
                 UserId = collection.UserId,
                 OrderId = collection.OrderId,
             };
+
             order.Add(res);
-            res.Staff.Status = "Busy";
             
             return RedirectToAction(nameof(Index));
         }
@@ -72,26 +77,35 @@ namespace Canteen_Order_Management_System.Controllers
         // GET: OrderController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var res = order.GetById(id);
+            var data = new OrderVM()
+            {
+                Users = order.Role_User(),
+                FoodItems = foodItem.GetFoodItems(),
+                Staffs = order.Role(),
+                StaffId = res.StaffId,
+                Status = res.Status,
+                FoodItemId = res.FoodItemId,
+                OrderDateTime = res.OrderDateTime,
+                OrderId = res.OrderId,
+                TotalPrice = res.TotalPrice,
+                UserId = res.UserId,
+                
+            };
+            return View(data);
         }
 
         // POST: OrderController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public IActionResult Edit(int id, OrderVM collection)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            order.Update(collection);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: OrderController/Delete/5
-        public ActionResult Delete(int id)
+        public IActionResult Delete(int id)
         {
             var res = order.GetById(id);
             return View(res);
@@ -100,7 +114,7 @@ namespace Canteen_Order_Management_System.Controllers
         // POST: OrderController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public IActionResult Delete(int id , IFormCollection collection)
         {
             order.Delete(id);
             return RedirectToAction(nameof(Index));
